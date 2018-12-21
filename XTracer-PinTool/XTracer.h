@@ -8,6 +8,7 @@
 class TracedUnit
 {
 	std::set<ANYADDR> dependencies;
+	int ref_count = 1;
 
 public:
 	TracedUnit() {}
@@ -17,6 +18,9 @@ public:
 	std::set<ANYADDR>& getDepends();
 
 	void dump(ostream& os);
+
+	void addRef();
+	void delRef();
 };
 
 class TracerContext

@@ -30,19 +30,47 @@ void TracedUnit::dump(ostream& os)
 	os << "]";
 }
 
+void TracedUnit::addRef()
+{
+	ref_count += 1;
+}
+
+void TracedUnit::delRef()
+{
+	ref_count -= 1;
+
+	if (ref_count == 0)
+		delete this;
+}
+
+
 void TracerContext::setReg(REG reg, TracedUnit* tup)
 {
+	if (regs.find(reg) != regs.end() && regs[reg])
+		regs[reg]->delRef();
+
+	if (tup)
+		tup->addRef();
+
 	regs[reg] = tup;
 }
 
 void TracerContext::setMem(ANYADDR addr, TracedUnit* tup)
 {
+	if (mem.find(addr) != mem.end())
+		mem[addr]->delRef();
+
+	tup->addRef();
 	mem[addr] = tup;
 }
 
 void TracerContext::removeMem(ANYADDR addr)
 {
-	mem.erase(addr);
+	if (mem.find(addr) != mem.end())
+	{
+		mem[addr]->delRef();
+		mem.erase(addr);
+	}
 }
 
 TracedUnit* TracerContext::getReg(REG reg)
