@@ -13,7 +13,7 @@ VOID Init(VOID* v)
 VOID Fini(INT32 code, VOID *v)
 {
 	cerr << "Saving dump...\n";
-	ofstream fs("xtrace.out");
+	ofstream fs(("xtrace_" + main_executable_name + ".out").c_str());
 	ctx.dump(fs);
 	fs.close();
 }

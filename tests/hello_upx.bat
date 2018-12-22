@@ -1,0 +1,1 @@
+powershell -Command "Measure-Command {.\pin-3.7-97619-g0d0c92f4f-msvc-windows\pin -t XTracer-PinTool.dll -- .\ConsoleApplication2.exe | Out-Default}"

@@ -55,3 +55,4 @@ VOID ApplicationExceptionHandler(THREADID threadIndex, CONTEXT_CHANGE_REASON rea
 
 extern TracerContext ctx;
 extern vector< pair<ANYADDR, ANYADDR> > xsecs;
+extern std::string main_executable_name;
