@@ -41,7 +41,6 @@ void TracedUnit::delRef()
 	ref_count -= 1;
 
 	if (ref_count == 0) {
-		//cerr << "DEL\n";
 		delete this;
 	}
 }
@@ -97,6 +96,12 @@ size_t TracerContext::memSize()
 	return mem.size();
 }
 
+size_t TracerContext::regsSize()
+{
+	return regs.size();
+}
+
+
 void TracerContext::dump(ostream& os)
 {
 	os << "[";
@@ -108,9 +113,10 @@ void TracerContext::dump(ostream& os)
 		{
 			if (addr >= xsecs[i].first && addr < xsecs[i].second)
 			{
-				for (set<ANYADDR>::iterator dit = mem[addr]->getDepends().begin(); dit != mem[addr]->getDepends().end(); ++dit)
+				for (auto& dit : mem[addr]->getDepends())
 				{
-					os << "[" << *dit << ", " << addr << "],\n";
+					os << "[" << dit << ", " << addr << "],\n";
+					LOG("[" << dit << ", " << addr << "]");
 				}
 				break;
 			}

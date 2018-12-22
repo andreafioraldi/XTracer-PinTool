@@ -1,22 +1,26 @@
 #include "XTracer.h"
 #include <iostream>
-#include <fstream>
+#include <sstream>
 
 using namespace std;
 
+
 VOID Init(VOID* v)
 {
-	cerr << "Starting application...\n";
+	LOG("Starting application...");
 	INS_AddInstrumentFunction(InstrumentInstruction, 0);
 }
 
 VOID Fini(INT32 code, VOID *v)
 {
-	cerr << "Saving dump...\n";
-	ofstream fs(("xtrace_" + main_executable_name + ".out").c_str());
+	/*cerr << "Saving dump...\n";
+	string filename = "xtrace_" + main_executable_name + ".out";
+	ofstream fs(filename.c_str());
 	ctx.dump(fs);
-	fs.close();
+	fs.close();*/
 }
+
+
 
 INT32 Usage()
 {
@@ -30,6 +34,9 @@ int main(int argc, char * argv[])
 	if (PIN_Init(argc, argv))
 		return Usage();
 
+	InitLog("");
+	ctx_key = PIN_CreateThreadDataKey(0);
+
 	PIN_AddInternalExceptionHandler(InternalExceptionHandler, NULL);
 	PIN_AddContextChangeFunction(ApplicationExceptionHandler, NULL);
 
@@ -37,6 +44,9 @@ int main(int argc, char * argv[])
 	
 	PIN_AddApplicationStartFunction(Init, 0);
 	PIN_AddFiniFunction(Fini, 0);
+
+	PIN_AddThreadStartFunction(ThreadInit, 0);
+	PIN_AddThreadFiniFunction(ThreadFini, 0);
 
 	PIN_StartProgram();
 

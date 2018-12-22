@@ -13,18 +13,20 @@ VOID InstrumentImage(IMG img, VOID* v)
 
 	if (IMG_IsMainExecutable(img))
 	{
-		cerr << "Loaded main image " << IMG_Name(img) << endl;
+		LOG("Loaded main image " << IMG_Name(img));
 		main_executable_name = IMG_Name(img);
 	}
 	else
-		cerr << "Loaded image " << IMG_Name(img) << endl;
+		LOG("Loaded image " << IMG_Name(img));
 
 	for (SEC sec = IMG_SecHead(img); SEC_Valid(sec); sec = SEC_Next(sec))
 	{
 		if (SEC_IsExecutable(sec))
 		{
 			ANYADDR s = SEC_Address(sec);
-			cerr << hex << "Spotted executable section " << s << " - " << (s + SEC_Size(sec)) << endl;
+
+			LOG(hex << "Spotted executable section " << s << " - " << (s + SEC_Size(sec)));
+
 			xsecs.push_back(pair<ANYADDR, ANYADDR>(s, s + SEC_Size(sec)));
 		}
 	}

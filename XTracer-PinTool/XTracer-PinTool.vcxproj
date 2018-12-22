@@ -258,7 +258,9 @@
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Instruction.cpp" />
+    <ClCompile Include="Logging.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MultiThreading.cpp" />
     <ClCompile Include="TracedContext.cpp" />
   </ItemGroup>
   <ItemGroup>
