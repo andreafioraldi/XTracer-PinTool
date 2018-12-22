@@ -14,5 +14,5 @@ VOID ApplicationExceptionHandler(THREADID threadIndex, CONTEXT_CHANGE_REASON rea
 	//	return;
 
 	cerr << "ApplicationExceptionHandler: Caught exception. " << info << endl;
-	PIN_ExitApplication(info);
+	//PIN_ExitApplication(info);
 }

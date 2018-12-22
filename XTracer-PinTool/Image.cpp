@@ -10,6 +10,8 @@ VOID InstrumentImage(IMG img, VOID* v)
 	if (!IMG_Valid(img))
 		return;
 
+	cerr << "Loaded image " << IMG_Name(img) << endl;
+
 	for (SEC sec = IMG_SecHead(img); SEC_Valid(sec); sec = SEC_Next(sec))
 	{
 		if (SEC_IsExecutable(sec))

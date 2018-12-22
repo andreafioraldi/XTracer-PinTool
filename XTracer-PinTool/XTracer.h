@@ -1,10 +1,12 @@
 #pragma once
 
 #include "pin.H"
+
 #include <set>
 #include <map>
 #include <ostream>
 #include <iostream>
+#include <hash_map>
 
 
 class TracedUnit
@@ -29,7 +31,7 @@ public:
 class TracerContext
 {
 	std::map<REG, TracedUnit*> regs;
-	std::map<ANYADDR, TracedUnit*> mem;
+	std::hash_map<ANYADDR, TracedUnit*> mem;
 	
 public:
 	void setReg(REG reg, TracedUnit* tup);

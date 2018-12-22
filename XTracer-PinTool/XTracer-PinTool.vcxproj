@@ -262,9 +262,6 @@
     <ClCompile Include="TracedContext.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="XTracer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

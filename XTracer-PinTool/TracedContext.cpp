@@ -100,9 +100,9 @@ size_t TracerContext::memSize()
 void TracerContext::dump(ostream& os)
 {
 	os << "[";
-	for (map<ANYADDR, TracedUnit*>::iterator it = mem.begin(); it != mem.end(); ++it)
+	for (auto& it : mem)
 	{
-		ANYADDR addr = it->first;
+		ANYADDR addr = it.first;
 		
 		for (int i = 0; i < xsecs.size(); ++i)
 		{
