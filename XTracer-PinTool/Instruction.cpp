@@ -1,5 +1,5 @@
 #include "XTracer.h"
-#include <iostream>
+
 using namespace std;
 
 TracerContext ctx;
@@ -65,7 +65,7 @@ VOID SpreadReg(UINT32 opCount, REG reg_r, REG reg_w)
 		return;
 	
 	TracedUnit* tup = ctx.getReg(reg_r);
-	cerr << reg_r << "   " << reg_w << "       " << tup << endl;
+	
 	if (!REG_valid(reg_r))
 	{
 		ctx.setReg(reg_w, nullptr);
@@ -89,12 +89,33 @@ VOID ExchangeReg(UINT32 opCount, REG reg_r, REG reg_w)
 	tup2->delRef();
 }
 
+VOID SpreadMergeReg(UINT32 opCount, REG reg_r, REG reg_w)
+{
+	if (opCount != 2)
+		return;
+
+	if (!REG_valid(reg_r))
+		return;
+
+	TracedUnit* tup1 = ctx.getReg(reg_r);
+	if (tup1 == nullptr)
+		return;
+
+	TracedUnit* tup2 = ctx.getReg(reg_w);
+
+	if(tup2 == nullptr)
+		ctx.setReg(reg_w, tup1);
+	else
+		ctx.setReg(reg_w, tup2->merge(tup1));
+}
+
 
 VOID InstrumentInstruction(INS ins, VOID *v)
 {
-	if (INS_Opcode(ins) == XED_ICLASS_CMP)
+	if (INS_Opcode(ins) == XED_ICLASS_CMP || INS_Opcode(ins) == XED_ICLASS_TEST)
 		return;
-	
+
+	//cout << hex << INS_Address(ins) << dec << "\t" << INS_Disassemble(ins) << "\t" << ctx.memSize() << endl;
 	if (INS_OperandCount(ins) > 1 && INS_MemoryOperandIsRead(ins, 0) && INS_OperandIsReg(ins, 0))
 	{
 		// mem to reg
@@ -155,6 +176,15 @@ VOID InstrumentInstruction(INS ins, VOID *v)
 		{
 			INS_InsertCall(
 				ins, IPOINT_BEFORE, (AFUNPTR)ExchangeReg,
+				IARG_UINT32, INS_OperandCount(ins),
+				IARG_UINT32, INS_RegR(ins, 0),
+				IARG_UINT32, INS_RegW(ins, 0),
+				IARG_END);
+		}
+		else
+		{
+			INS_InsertCall(
+				ins, IPOINT_BEFORE, (AFUNPTR)SpreadMergeReg,
 				IARG_UINT32, INS_OperandCount(ins),
 				IARG_UINT32, INS_RegR(ins, 0),
 				IARG_UINT32, INS_RegW(ins, 0),

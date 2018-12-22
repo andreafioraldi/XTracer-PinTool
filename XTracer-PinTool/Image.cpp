@@ -15,6 +15,7 @@ VOID InstrumentImage(IMG img, VOID* v)
 		if (SEC_IsExecutable(sec))
 		{
 			ANYADDR s = SEC_Address(sec);
+			cerr << hex << "Spotted executable section " << s << " - " << (s + SEC_Size(sec)) << endl;
 			xsecs.push_back(pair<ANYADDR, ANYADDR>(s, s + SEC_Size(sec)));
 		}
 	}

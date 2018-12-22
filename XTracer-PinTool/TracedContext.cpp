@@ -10,6 +10,7 @@ TracedUnit::TracedUnit(ANYADDR addr)
 TracedUnit* TracedUnit::merge(TracedUnit* tup)
 {
 	TracedUnit* r = new TracedUnit(*this);
+	r->ref_count = 0;
 	r->dependencies.insert(tup->dependencies.begin(), tup->dependencies.end());
 	return r;
 }
@@ -39,8 +40,10 @@ void TracedUnit::delRef()
 {
 	ref_count -= 1;
 
-	if (ref_count == 0)
+	if (ref_count == 0) {
+		//cerr << "DEL\n";
 		delete this;
+	}
 }
 
 
@@ -87,6 +90,11 @@ TracedUnit* TracerContext::getMem(ANYADDR addr)
 		mem[addr] = new TracedUnit(addr);
 
 	return mem[addr];
+}
+
+size_t TracerContext::memSize()
+{
+	return mem.size();
 }
 
 void TracerContext::dump(ostream& os)
