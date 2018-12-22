@@ -4,20 +4,22 @@
 
 using namespace std;
 
+KNOB<string> KnobOutputFolder(KNOB_MODE_WRITEONCE, "pintool",
+	"o", "xtrace_output", "specify output folder");
 
 VOID Init(VOID* v)
 {
 	LOG("Starting application...");
+
+	TracerContext* ctx = new TracerContext();
+	PIN_SetThreadData(ctx_key, ctx, 0);
+
 	INS_AddInstrumentFunction(InstrumentInstruction, 0);
 }
 
 VOID Fini(INT32 code, VOID *v)
 {
-	/*cerr << "Saving dump...\n";
-	string filename = "xtrace_" + main_executable_name + ".out";
-	ofstream fs(filename.c_str());
-	ctx.dump(fs);
-	fs.close();*/
+	LOG("Application terminated.");
 }
 
 
@@ -31,11 +33,15 @@ INT32 Usage()
 
 int main(int argc, char * argv[])
 {
+	PIN_InitSymbols();
+
 	if (PIN_Init(argc, argv))
 		return Usage();
-
+	
 	InitLog("");
 	ctx_key = PIN_CreateThreadDataKey(0);
+
+	OS_MkDir(KnobOutputFolder.Value().c_str(), OS_FILE_ATTRIBUTES_DIRECTORY);
 
 	PIN_AddInternalExceptionHandler(InternalExceptionHandler, NULL);
 	PIN_AddContextChangeFunction(ApplicationExceptionHandler, NULL);

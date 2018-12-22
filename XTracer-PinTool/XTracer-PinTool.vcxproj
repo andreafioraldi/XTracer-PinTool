@@ -262,8 +262,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MultiThreading.cpp" />
     <ClCompile Include="TracedContext.cpp" />
+    <ClCompile Include="VMMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WinHeaderStub.h" />
     <ClInclude Include="XTracer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

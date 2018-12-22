@@ -8,6 +8,7 @@
 #include <iostream>
 #include <hash_map>
 
+extern KNOB<string> KnobOutputFolder;
 
 class TracedUnit
 {
@@ -54,13 +55,12 @@ VOID Fini(INT32 code, VOID *v);
 EXCEPT_HANDLING_RESULT InternalExceptionHandler(THREADID threadIndex, EXCEPTION_INFO * pExceptInfo, PHYSICAL_CONTEXT * pPhysCtxt, VOID *v);
 VOID ApplicationExceptionHandler(THREADID threadIndex, CONTEXT_CHANGE_REASON reason, const CONTEXT *from, CONTEXT *to, INT32 info, VOID *v);
 
+vector< pair<ANYADDR, ANYADDR> > GetExecutablePages();
+
 extern TLS_KEY ctx_key;
 
 VOID ThreadInit(THREADID threadid, CONTEXT *ctxt, INT32 flags, VOID *v);
 VOID ThreadFini(THREADID threadid, const CONTEXT *ctxt, INT32 code, VOID *v);
-
-extern vector< pair<ANYADDR, ANYADDR> > xsecs;
-extern std::string main_executable_name;
 
 //
 // LOGGING

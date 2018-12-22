@@ -104,19 +104,21 @@ size_t TracerContext::regsSize()
 
 void TracerContext::dump(ostream& os)
 {
+	vector< pair<ANYADDR, ANYADDR> > xpages = GetExecutablePages();
+
 	os << "[";
 	for (auto& it : mem)
 	{
 		ANYADDR addr = it.first;
 		
-		for (int i = 0; i < xsecs.size(); ++i)
+		for (int i = 0; i < xpages.size(); ++i)
 		{
-			if (addr >= xsecs[i].first && addr < xsecs[i].second)
+			if (addr >= xpages[i].first && addr < xpages[i].second)
 			{
-				for (auto& dit : mem[addr]->getDepends())
+				for (set<ANYADDR>::iterator dit = mem[addr]->getDepends().begin(); dit != mem[addr]->getDepends().end(); ++dit)
 				{
-					os << "[" << dit << ", " << addr << "],\n";
-					LOG("[" << dit << ", " << addr << "]");
+					os << "[" << *dit << ", " << addr << "],\n";
+					//LOG("[" << *dit << ", " << addr << "]");
 				}
 				break;
 			}

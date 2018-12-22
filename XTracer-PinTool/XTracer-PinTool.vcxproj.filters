@@ -36,9 +36,15 @@
     <ClCompile Include="Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VMMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="XTracer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WinHeaderStub.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
