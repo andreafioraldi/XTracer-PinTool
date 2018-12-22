@@ -21,7 +21,7 @@ VOID ThreadFini(THREADID threadid, const CONTEXT *ctxt, INT32 code, VOID *v)
 
 	LOG("Saving dump (collected " << dec << ctx->memSize() << " operations)...");
 	stringstream ss;
-	ss << KnobOutputFolder.Value() << "/xtrace_" << threadid << ".out";
+	ss << KnobOutputFolder.Value() << "/xtrace_" << threadid << ".json";
 	ofstream fs(ss.str().c_str());
 	ctx->dump(fs);
 	fs.close();
